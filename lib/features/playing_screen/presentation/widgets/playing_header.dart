@@ -25,27 +25,32 @@ class PlayingHeader extends StatelessWidget {
               },
             ),
           ),
-          Column(
-            children: [
-              const Text(
-                'PLAYING FROM ALBUM',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                  color: Colors.white70,
+          Expanded(
+            child: Column(
+              children: [
+                const Text(
+                  'PLAYING FROM ALBUM',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                    color: Colors.white70,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                albumName,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                const SizedBox(height: 4),
+                Text(
+                  albumName,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             decoration: BoxDecoration(

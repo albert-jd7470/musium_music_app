@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/signup_screen.dart';
+import '../../features/search_screen/data/models/song_model.dart';
+
 import '../presentation/screens/main_layout.dart';
 import '../../features/home_screen/presentation/screens/home_screen.dart';
 import '../../features/search_screen/presentation/screens/search_screen.dart';
@@ -17,27 +21,45 @@ final GlobalKey<NavigatorState> _shellNavigatorSearchKey =
 
 final goRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/login',
   routes: [
+    // Auth routes
+    GoRoute(
+      path: '/login',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: LoginScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/signup',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: SignupScreen(),
+      ),
+    ),
     // Full screen route outside the bottom nav shell
     GoRoute(
       path: '/playing',
       parentNavigatorKey: _rootNavigatorKey,
-      pageBuilder: (context, state) => CustomTransitionPage(
-        key: state.pageKey,
-        child: const PlayingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: animation.drive(
-              Tween(
-                begin: const Offset(0.0, 1.0),
-                end: Offset.zero,
-              ).chain(CurveTween(curve: Curves.easeIn)),
-            ),
-            child: child,
-          );
-        },
-      ),
+      pageBuilder: (context, state) {
+        final song = state.extra as SongModel?;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: PlayingScreen(song: song),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: animation.drive(
+                Tween(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.easeIn)),
+              ),
+              child: child,
+            );
+          },
+        );
+      },
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

@@ -40,7 +40,13 @@ dependencies:
   http: ^1.6.0
   dio: ^5.11.0
   just_audio: ^0.10.6
-
+  shared_preferences: ^2.5.5
+  firebase_core: ^4.13.0
+  firebase_auth: ^6.5.7
+  cloud_firestore: ^6.8.0
+  google_sign_in: ^6.2.2
+  just_audio_background: ^0.0.1-beta.17
+  volume_controller: ^3.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,6 +82,7 @@ flutter:
     - assets/
     - assets/logo/
     - assets/icons/
+    - assets/avatar/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

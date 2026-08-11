@@ -78,7 +78,7 @@ class DummyData {
   static List<RecentlyPlayedItem> recentlyPlayedItems = [
     RecentlyPlayedItem(
       title: 'Midnight City',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f5646c?q=80&w=300&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=300&auto=format&fit=crop',
     ),
     RecentlyPlayedItem(
       title: 'Lost in\nWoods',
@@ -141,7 +141,7 @@ class DummyData {
     ),
     BrowseCategory(
       title: 'Hip-Hop',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f5646c?q=80&w=300&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=300&auto=format&fit=crop',
     ),
     BrowseCategory(
       title: 'Electronic',
@@ -181,7 +181,7 @@ class DummyData {
       title: 'City Rhythms',
       artist: 'DJ Metro',
       genre: 'Lo-Fi Beats',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f5646c?q=80&w=300&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=300&auto=format&fit=crop',
       isDownloaded: false,
     ),
     LibraryItem(

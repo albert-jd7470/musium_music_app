@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/splash_screen/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/search_screen/data/models/song_model.dart';
@@ -11,6 +12,8 @@ import '../../features/search_screen/presentation/screens/search_screen.dart';
 import '../../features/playing_screen/presentation/screens/playing_screen.dart';
 import '../../features/wishlist_screen/presentation/screens/wishlist_screen.dart';
 import '../../features/profile_screen/presentation/screens/profile_screen.dart';
+import '../../features/artist_screen/presentation/screens/artist_screen.dart';
+import '../../features/profile_screen/presentation/screens/privacy_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -21,8 +24,15 @@ final GlobalKey<NavigatorState> _shellNavigatorSearchKey =
 
 final goRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/login',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(
+      path: '/splash',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: SplashScreen(),
+      ),
+    ),
     // Auth routes
     GoRoute(
       path: '/login',
@@ -37,6 +47,11 @@ final goRouter = GoRouter(
       pageBuilder: (context, state) => const NoTransitionPage(
         child: SignupScreen(),
       ),
+    ),
+    GoRoute(
+      path: '/privacy',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const PrivacyScreen(),
     ),
     // Full screen route outside the bottom nav shell
     GoRoute(
@@ -59,6 +74,15 @@ final goRouter = GoRouter(
             );
           },
         );
+      },
+    ),
+    GoRoute(
+      path: '/artist/:id',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) {
+        final artistId = state.pathParameters['id'] ?? '';
+        final artistName = state.extra as String? ?? 'Artist';
+        return ArtistScreen(artistId: artistId, artistName: artistName);
       },
     ),
     StatefulShellRoute.indexedStack(

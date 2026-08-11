@@ -19,21 +19,15 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const HomeHeader(
-                  profilePicUrl: DummyData.profilePicUrl,
-                ),
+                const HomeHeader(),
                 const SizedBox(height: 16),
                 FeaturedSection(
                   items: DummyData.featuredItems,
                 ),
                 const SizedBox(height: 16),
-                RecentlyPlayedSection(
-                  items: DummyData.recentlyPlayedItems,
-                ),
+                const RecentlyPlayedSection(),
                 const SizedBox(height: 16),
-                TrendingNowSection(
-                  items: DummyData.trendingItems,
-                ),
+                const TrendingNowSection(),
               ],
             ),
           ),

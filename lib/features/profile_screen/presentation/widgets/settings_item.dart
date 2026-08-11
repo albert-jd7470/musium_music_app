@@ -6,6 +6,7 @@ class SettingsItem extends StatelessWidget {
   final String subtitle;
   final Widget? trailing;
   final bool isHighlighted;
+  final VoidCallback? onTap;
 
   const SettingsItem({
     Key? key,
@@ -14,18 +15,21 @@ class SettingsItem extends StatelessWidget {
     required this.subtitle,
     this.trailing,
     this.isHighlighted = false,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      decoration: BoxDecoration(
-        color: isHighlighted ? const Color(0xFF1E1E24) : Colors.transparent,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      child: Row(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        decoration: BoxDecoration(
+          color: isHighlighted ? const Color(0xFF1E1E24) : Colors.transparent,
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -66,6 +70,6 @@ class SettingsItem extends StatelessWidget {
           if (trailing != null) trailing!,
         ],
       ),
-    );
+      ));
   }
 }

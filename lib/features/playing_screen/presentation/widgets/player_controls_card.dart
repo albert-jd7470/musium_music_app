@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:volume_controller/volume_controller.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import '../../../../core/providers/audio_provider.dart';
+import '../../../../core/providers/wishlist_provider.dart';
+import '../../../../features/search_screen/data/models/song_model.dart';
 
 class PlayerControlsCard extends StatelessWidget {
   final String title;
   final String artist;
+  final SongModel? song;
   final AudioPlayer? player;
 
   const PlayerControlsCard({
     Key? key,
     required this.title,
     required this.artist,
+    this.song,
     this.player,
   }) : super(key: key);
 
@@ -55,10 +62,26 @@ class PlayerControlsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.favorite, color: Colors.white70),
-                onPressed: () {},
-              ),
+              if (song != null)
+                Consumer<WishlistProvider>(
+                  builder: (context, wishlistProvider, child) {
+                    final isWishlisted = wishlistProvider.isWishlisted(song!.id);
+                    return IconButton(
+                      icon: Icon(
+                        isWishlisted ? Icons.favorite : Icons.favorite_border,
+                        color: isWishlisted ? const Color(0xFF1ED760) : Colors.white70,
+                      ),
+                      onPressed: () {
+                        wishlistProvider.toggleWishlist(song!);
+                      },
+                    );
+                  },
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.favorite_border, color: Colors.white70),
+                  onPressed: () {},
+                ),
             ],
           ),
           const SizedBox(height: 8),
@@ -126,7 +149,9 @@ class PlayerControlsCard extends StatelessWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.skip_previous, color: Colors.white, size: 32),
-                onPressed: () {},
+                onPressed: () {
+                  Provider.of<AudioProvider>(context, listen: false).playPrevious();
+                },
               ),
               StreamBuilder<PlayerState>(
                 stream: player?.playerStateStream,
@@ -178,11 +203,30 @@ class PlayerControlsCard extends StatelessWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.skip_next, color: Colors.white, size: 32),
-                onPressed: () {},
+                onPressed: () {
+                  Provider.of<AudioProvider>(context, listen: false).playNext();
+                },
               ),
-              IconButton(
-                icon: const Icon(Icons.repeat, color: Colors.white),
-                onPressed: () {},
+              StreamBuilder<LoopMode>(
+                stream: player?.loopModeStream,
+                builder: (context, snapshot) {
+                  final loopMode = snapshot.data ?? LoopMode.off;
+                  return IconButton(
+                    icon: Icon(
+                      loopMode == LoopMode.one ? Icons.repeat_one : Icons.repeat,
+                      color: loopMode == LoopMode.off ? Colors.white : const Color(0xFF1ED760),
+                    ),
+                    onPressed: () {
+                      if (player != null) {
+                        if (loopMode == LoopMode.off) {
+                          player!.setLoopMode(LoopMode.one);
+                        } else {
+                          player!.setLoopMode(LoopMode.off);
+                        }
+                      }
+                    },
+                  );
+                },
               ),
             ],
           ),
@@ -196,26 +240,7 @@ class PlayerControlsCard extends StatelessWidget {
               const Icon(Icons.volume_down, color: Colors.white54, size: 16),
               const SizedBox(width: 8),
               Expanded(
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 2,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                    ),
-                    Container(
-                      height: 2,
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      decoration: BoxDecoration(
-                        color: Colors.white54,
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                    ),
-                  ],
-                ),
+                child: const VolumeSliderWidget(),
               ),
               const SizedBox(width: 8),
               const Icon(Icons.volume_up, color: Colors.white54, size: 16),
@@ -238,5 +263,72 @@ class PlayerControlsCard extends StatelessWidget {
     } else {
       return "${duration.inMinutes.toString()}:$twoDigitSeconds";
     }
+  }
+}
+
+class VolumeSliderWidget extends StatefulWidget {
+  const VolumeSliderWidget({Key? key}) : super(key: key);
+
+  @override
+  State<VolumeSliderWidget> createState() => _VolumeSliderWidgetState();
+}
+
+class _VolumeSliderWidgetState extends State<VolumeSliderWidget> {
+  double _currentVolume = 0.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _initVolume();
+  }
+
+  Future<void> _initVolume() async {
+    // Hide UI Volume overlay to match native feel natively (Optional)
+    VolumeController.instance.showSystemUI = false; 
+    
+    // Get initial volume
+    _currentVolume = await VolumeController.instance.getVolume();
+    if (mounted) setState(() {});
+
+    // Listen to volume changes (hardware buttons)
+    VolumeController.instance.addListener((volume) {
+      if (mounted) {
+        setState(() {
+          _currentVolume = volume;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    VolumeController.instance.removeListener();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        trackHeight: 2.0,
+        activeTrackColor: Colors.white54,
+        inactiveTrackColor: Colors.white.withOpacity(0.1),
+        thumbColor: Colors.white,
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 4.0),
+        overlayShape: const RoundSliderOverlayShape(overlayRadius: 10.0),
+        trackShape: const RectangularSliderTrackShape(),
+      ),
+      child: Slider(
+        value: _currentVolume,
+        min: 0.0,
+        max: 1.0,
+        onChanged: (val) {
+          setState(() {
+            _currentVolume = val;
+          });
+          VolumeController.instance.setVolume(val);
+        },
+      ),
+    );
   }
 }

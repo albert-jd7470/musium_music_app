@@ -18,21 +18,8 @@ class AlbumArtDisplay extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    const Icon(Icons.arrow_back_ios, color: Colors.white70, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Back',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
                 Text(
                   'NOW PLAYING',
                   style: TextStyle(
@@ -42,7 +29,6 @@ class AlbumArtDisplay extends StatelessWidget {
                     letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(width: 48), // Balance for 'Back' text on the left
               ],
             ),
           ),

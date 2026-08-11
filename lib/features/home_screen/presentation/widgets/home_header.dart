@@ -1,45 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:musium_music_app/core/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeHeader extends StatelessWidget {
-  final String profilePicUrl;
-
-  const HomeHeader({Key? key, required this.profilePicUrl}) : super(key: key);
+  const HomeHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        final user = authProvider.userModel;
+        final firstName = user?.firstName ?? 'User';
+        final avatarId = user?.avatarId ?? 'avatar-1.png';
+        final avatarPath = 'assets/avatar/$avatarId';
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end ,
             children: [
-              Text(
-                'Good Evening,',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/logo/applogo.png',
+                    width: 42,
+                    height: 42,
+                  ),
+                   SizedBox(width: 5),
+                  Image.asset(
+                    'assets/logo/app_name.png',
+                    height: 24, // Adjust height as needed
+                    color: const Color(0xFF1ED760), // Tint the image green
+                  ),
+                ],
               ),
-              SizedBox(height: 4),
-              Text(
-                'Alex',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white70,
+              const Spacer(),
+              PopupMenuButton<String>(
+                onSelected: (value) async {
+                  if (value == 'logout') {
+                    await authProvider.logout();
+                    if (context.mounted) {
+                      context.go('/login');
+                    }
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'logout',
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text('Logout'),
+                      ],
+                    ),
+                  ),
+                ],
+                child: CircleAvatar(
+                  radius: 28,
+                  backgroundImage: AssetImage(avatarPath),
+                  backgroundColor: Colors.grey[800],
                 ),
               ),
             ],
           ),
-          CircleAvatar(
-            radius: 28,
-            backgroundImage: NetworkImage(profilePicUrl),
-            backgroundColor: Colors.grey[800],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

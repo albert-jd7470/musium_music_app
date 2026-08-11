@@ -45,12 +45,12 @@ class CustomBottomNavBar extends StatelessWidget {
             isSelected: currentIndex == 2,
             onTap: () => onTap(2), 
           ),
-          _NavBarItem(
-            icon: Icons.play_circle_outline,
-            label: 'Playing',
-            isSelected: false, // Playing is a modal/full screen, not a tab state
-            onTap: () => context.push('/playing'),
-          ),
+          // _NavBarItem(
+          //   icon: Icons.play_circle_outline,
+          //   label: 'Playing',
+          //   isSelected: false, // Playing is a modal/full screen, not a tab state
+          //   onTap: () => context.push('/playing'),
+          // ),
           _NavBarItem(
             icon: Icons.person_outline,
             label: 'Profile',

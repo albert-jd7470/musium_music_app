@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/providers/audio_provider.dart';
 import '../../../../features/home_screen/data/dummy_data.dart';
 import '../../../../core/presentation/widgets/main_header.dart';
 import '../widgets/browse_all_section.dart';
@@ -9,8 +10,26 @@ import '../widgets/search_bar_widget.dart';
 import '../widgets/trending_right_now_section.dart';
 import '../providers/search_provider.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onRecentSearchTapped(String query) {
+    _searchController.text = query;
+    Provider.of<SearchProvider>(context, listen: false).searchSongs(query);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +41,8 @@ class SearchScreen extends StatelessWidget {
           children: [
             const MainHeader(
               title: 'Search',
-              profilePicUrl: DummyData.profilePicUrl,
             ),
-            const SearchBarWidget(),
+            SearchBarWidget(controller: _searchController),
             Expanded(
               child: Consumer<SearchProvider>(
                 builder: (context, searchProvider, child) {
@@ -81,7 +99,11 @@ class SearchScreen extends StatelessWidget {
                           ),
                           trailing: const Icon(Icons.more_vert, color: Colors.white54),
                           onTap: () {
-                            context.push('/playing', extra: song);
+                            Provider.of<AudioProvider>(context, listen: false).playQueue(
+                              searchProvider.searchResults,
+                              initialIndex: index,
+                            );
+                            context.push('/playing');
                           },
                         );
                       },
@@ -95,9 +117,14 @@ class SearchScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RecentSearchesSection(
-                            recentSearches: DummyData.recentSearches,
-                          ),
+                          if (searchProvider.recentSearches.isNotEmpty)
+                            RecentSearchesSection(
+                              recentSearches: searchProvider.recentSearches,
+                              onSearchTapped: _onRecentSearchTapped,
+                              onClearTapped: () {
+                                searchProvider.clearRecentSearches();
+                              },
+                            ),
                           TrendingRightNowSection(
                             items: DummyData.searchTrendingItems,
                           ),

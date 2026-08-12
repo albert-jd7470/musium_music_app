@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/providers/audio_provider.dart';
-import '../../../../features/home_screen/data/dummy_data.dart';
+
 import '../../../../core/presentation/widgets/main_header.dart';
-import '../widgets/browse_all_section.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
+import '../widgets/playlist_section.dart';
 import '../widgets/recent_searches_section.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/trending_right_now_section.dart';
@@ -70,19 +71,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         return ListTile(
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
+                            child: CustomNetworkImage(
                               song.bestImageUrl,
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.grey.shade800,
-                                  child: const Icon(Icons.music_note, color: Colors.white54),
-                                );
-                              },
                             ),
                           ),
                           title: Text(
@@ -125,12 +118,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 searchProvider.clearRecentSearches();
                               },
                             ),
-                          TrendingRightNowSection(
-                            items: DummyData.searchTrendingItems,
-                          ),
-                          BrowseAllSection(
-                            categories: DummyData.browseCategories,
-                          ),
+                          const TrendingRightNowSection(),
+                          const PlaylistSection(),
                         ],
                       ),
                     ),

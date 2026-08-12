@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musium_music_app/core/presentation/widgets/custom_network_image.dart';
 import '../../data/dummy_data.dart';
 
 class FeaturedSection extends StatelessWidget {
@@ -46,7 +47,7 @@ class FeaturedSection extends StatelessWidget {
                           topLeft: Radius.circular(24.0),
                           topRight: Radius.circular(24.0),
                         ),
-                        child: Image.network(
+                        child: CustomNetworkImage(
                           item.imageUrl,
                           width: double.infinity,
                           fit: BoxFit.cover,

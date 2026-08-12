@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ArtistInfoSection extends StatelessWidget {
   final List<Map<String, String>> artistsList;
@@ -56,8 +57,8 @@ class ArtistInfoSection extends StatelessWidget {
                         radius: 36,
                         backgroundColor: Colors.grey[800],
                         backgroundImage: artist['image'] != null && artist['image']!.isNotEmpty
-                            ? NetworkImage(artist['image']!)
-                            : (fallbackImageUrl.isNotEmpty ? NetworkImage(fallbackImageUrl) : null),
+                            ? CachedNetworkImageProvider(artist['image']!) as ImageProvider
+                            : (fallbackImageUrl.isNotEmpty ? CachedNetworkImageProvider(fallbackImageUrl) : null),
                         child: (artist['image'] == null || artist['image']!.isEmpty) && fallbackImageUrl.isEmpty
                             ? const Icon(Icons.person, color: Colors.white54, size: 36)
                             : null,

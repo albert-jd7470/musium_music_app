@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../providers/audio_provider.dart';
+import 'custom_network_image.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({Key? key}) : super(key: key);
@@ -49,19 +50,11 @@ class MiniPlayer extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
+                  child: CustomNetworkImage(
                     imageUrl,
                     width: 48,
                     height: 48,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 48,
-                        height: 48,
-                        color: Colors.grey.shade800,
-                        child: const Icon(Icons.music_note, color: Colors.white54),
-                      );
-                    },
                   ),
                 ),
                 const SizedBox(width: 12.0),

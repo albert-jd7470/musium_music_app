@@ -8,6 +8,7 @@ import '../../../../features/search_screen/data/models/song_model.dart';
 import '../../../../core/presentation/widgets/mini_player.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../../../core/providers/wishlist_provider.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 
 class ArtistScreen extends StatefulWidget {
   final String artistId;
@@ -132,7 +133,11 @@ class _ArtistScreenState extends State<ArtistScreen> {
     } catch (e) {
       print('🎤 Exception: $e');
       setState(() {
-        errorMessage = 'Error: $e';
+        if (e.toString().contains('SocketException') || e.toString().contains('Failed host lookup')) {
+          errorMessage = 'No internet connection.';
+        } else {
+          errorMessage = 'An error occurred. Please try again.';
+        }
         isLoading = false;
       });
     }
@@ -161,13 +166,9 @@ class _ArtistScreenState extends State<ArtistScreen> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
+                  CustomNetworkImage(
                     artistImage,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: const Color(0xFF1E1E24),
-                      child: const Icon(Icons.person, color: Colors.white24, size: 80),
-                    ),
                   ),
                   // Gradient overlay to make text readable
                   Container(
@@ -344,17 +345,11 @@ class _ArtistScreenState extends State<ArtistScreen> {
             const SizedBox(width: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
+              child: CustomNetworkImage(
                 song.bestImageUrl.isNotEmpty ? song.bestImageUrl : 'https://via.placeholder.com/50',
                 width: 48,
                 height: 48,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  width: 48,
-                  height: 48,
-                  color: Colors.grey.shade800,
-                  child: const Icon(Icons.music_note, color: Colors.white54, size: 24),
-                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -448,7 +443,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
-            child: Image.network(
+            child: CustomNetworkImage(
               imageUrl,
               width: 160,
               height: 160,

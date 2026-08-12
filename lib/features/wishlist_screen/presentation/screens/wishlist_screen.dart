@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/presentation/widgets/main_header.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 import '../../../../features/home_screen/data/dummy_data.dart';
 import '../../../../core/providers/wishlist_provider.dart';
 import '../../../../core/providers/audio_provider.dart';
@@ -65,7 +66,7 @@ class WishlistScreen extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12.0),
-                                child: Image.network(
+                                child: CustomNetworkImage(
                                   song.bestImageUrl.isNotEmpty ? song.bestImageUrl : 'https://via.placeholder.com/56',
                                   width: 56,
                                   height: 56,
@@ -101,15 +102,59 @@ class WishlistScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.favorite,
-                                  color: Color(0xFF1ED760),
-                                  size: 24,
-                                ),
-                                onPressed: () {
-                                  wishlistProvider.toggleWishlist(song);
+                              PopupMenuButton<String>(
+                                onSelected: (value) {
+                                  if (value == 'remove') {
+                                    wishlistProvider.toggleWishlist(song);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('"${song.name}" removed from wishlist.'),
+                                        backgroundColor: const Color(0xFF2C2C2C),
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  } else if (value == 'queue') {
+                                    Provider.of<AudioProvider>(context, listen: false)
+                                        .insertNext(song);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('"${song.name}" will play next!'),
+                                        backgroundColor: const Color(0xFF1ED760),
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
                                 },
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: Colors.white.withOpacity(0.6),
+                                  size: 22,
+                                ),
+                                color: const Color(0xFF2C2C2C),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                itemBuilder: (_) => [
+                                  const PopupMenuItem(
+                                    value: 'remove',
+                                    child: Row(children: [
+                                      Icon(Icons.favorite_border,
+                                          color: Colors.redAccent, size: 20),
+                                      SizedBox(width: 12),
+                                      Text('Remove from Wishlist',
+                                          style: TextStyle(color: Colors.redAccent)),
+                                    ]),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'queue',
+                                    child: Row(children: [
+                                      Icon(Icons.queue_music,
+                                          color: Colors.white, size: 20),
+                                      SizedBox(width: 12),
+                                      Text('Play in Queue',
+                                          style: TextStyle(color: Colors.white)),
+                                    ]),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

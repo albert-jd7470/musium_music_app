@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../features/home_screen/data/dummy_data.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 
 class LibraryListItem extends StatelessWidget {
   final LibraryItem item;
@@ -20,7 +21,7 @@ class LibraryListItem extends StatelessWidget {
           // Album Art
           ClipRRect(
             borderRadius: BorderRadius.circular(28.0), // Rounded inner image
-            child: Image.network(
+            child: CustomNetworkImage(
               item.imageUrl,
               width: 56,
               height: 56,

@@ -3,6 +3,7 @@ import 'package:musium_music_app/features/search_screen/data/models/song_model.d
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/providers/audio_provider.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 import '../providers/trending_provider.dart';
 
 class TrendingNowSection extends StatelessWidget {
@@ -154,19 +155,11 @@ class TrendingNowSection extends StatelessWidget {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
-                            child: Image.network(
+                            child: CustomNetworkImage(
                               song.bestImageUrl.isNotEmpty ? song.bestImageUrl : 'https://via.placeholder.com/60',
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 60,
-                                  height: 60,
-                                  color: Colors.grey.shade800,
-                                  child: const Icon(Icons.music_note, color: Colors.white54),
-                                );
-                              },
                             ),
                           ),
                           const SizedBox(width: 16.0),

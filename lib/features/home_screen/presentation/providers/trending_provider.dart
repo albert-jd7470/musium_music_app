@@ -34,7 +34,12 @@ class TrendingProvider extends ChangeNotifier {
       final user = FirebaseAuth.instance.currentUser;
       
       if (user != null) {
-        final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .timeout(const Duration(seconds: 3));
+            
         if (doc.exists && doc.data()!.containsKey('preferredLanguage')) {
           _selectedLanguage = doc.data()!['preferredLanguage'];
         } else {
@@ -101,8 +106,14 @@ class TrendingProvider extends ChangeNotifier {
       } else {
         _errorMessage = 'Failed to load trending data.';
       }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError || e.type == DioExceptionType.unknown) {
+        _errorMessage = 'No internet connection.';
+      } else {
+        _errorMessage = 'Failed to load data. Please try again.';
+      }
     } catch (e) {
-      _errorMessage = 'An error occurred: $e';
+      _errorMessage = 'An error occurred. Please try again.';
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 
 class AlbumArtDisplay extends StatelessWidget {
   final String imageUrl;
@@ -36,7 +37,7 @@ class AlbumArtDisplay extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24.0),
-              child: Image.network(
+              child: CustomNetworkImage(
                 imageUrl,
                 width: double.infinity,
                 height: MediaQuery.of(context).size.width - 80, // square aspect ratio approximately

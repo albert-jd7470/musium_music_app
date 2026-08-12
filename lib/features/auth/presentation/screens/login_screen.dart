@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/services/guest_session_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,8 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.topRight,
                   child: OutlinedButton(
-                    onPressed: () {
-                      context.go('/');
+                    onPressed: () async {
+                      await GuestSessionService.startGuestSession();
+                      if (context.mounted) context.go('/');
                     },
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.grey.shade300,

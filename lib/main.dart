@@ -7,9 +7,11 @@ import 'core/router/app_router.dart';
 import 'core/providers/audio_provider.dart';
 import 'core/providers/history_provider.dart';
 import 'core/providers/wishlist_provider.dart';
+import 'core/providers/playlist_provider.dart';
 import 'core/providers/auth_provider.dart';
 import 'features/search_screen/presentation/providers/search_provider.dart';
 import 'features/home_screen/presentation/providers/trending_provider.dart';
+import 'core/presentation/widgets/connectivity_wrapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => HistoryProvider()),
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
+        ChangeNotifierProvider(create: (_) => PlaylistProvider()),
         ChangeNotifierProxyProvider<HistoryProvider, AudioProvider>(
           create: (context) => AudioProvider(),
           update: (context, historyProvider, audioProvider) {
@@ -76,6 +79,11 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.black,
         ),
       ),
+      builder: (context, child) {
+        return ConnectivityWrapper(
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       routerConfig: goRouter,
     );
   }

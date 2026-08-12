@@ -14,6 +14,8 @@ import '../../features/wishlist_screen/presentation/screens/wishlist_screen.dart
 import '../../features/profile_screen/presentation/screens/profile_screen.dart';
 import '../../features/artist_screen/presentation/screens/artist_screen.dart';
 import '../../features/profile_screen/presentation/screens/privacy_screen.dart';
+import '../../features/playlist_screen/presentation/screens/playlist_screen.dart';
+import '../../core/models/playlist_model.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -74,6 +76,14 @@ final goRouter = GoRouter(
             );
           },
         );
+      },
+    ),
+    GoRoute(
+      path: '/playlist/:id',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) {
+        final playlist = state.extra as PlaylistModel;
+        return PlaylistScreen(playlist: playlist);
       },
     ),
     GoRoute(

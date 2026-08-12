@@ -95,8 +95,14 @@ class SearchProvider extends ChangeNotifier {
       } else {
         _errorMessage = 'Failed to load search results. Status Code: ${response.statusCode}';
       }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError || e.type == DioExceptionType.unknown) {
+        _errorMessage = 'No internet connection.';
+      } else {
+        _errorMessage = 'Failed to load search results.';
+      }
     } catch (e) {
-      _errorMessage = 'An error occurred: $e';
+      _errorMessage = 'An error occurred. Please try again.';
     } finally {
       _isLoading = false;
       notifyListeners();

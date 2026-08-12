@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../features/home_screen/data/dummy_data.dart';
 import '../../../../features/search_screen/data/models/song_model.dart';
 import '../../../../core/providers/audio_provider.dart';
+import '../../../../core/presentation/widgets/custom_network_image.dart';
 import '../widgets/album_art_display.dart';
 import '../widgets/player_controls_card.dart';
 import '../widgets/playing_header.dart';
@@ -35,7 +36,7 @@ class PlayingScreen extends StatelessWidget {
             children: [
               // Background Image with Blur
               Positioned.fill(
-                child: Image.network(
+                child: CustomNetworkImage(
                   imageUrl,
                   fit: BoxFit.cover,
                 ),
@@ -52,7 +53,7 @@ class PlayingScreen extends StatelessWidget {
               SafeArea(
                 child: Column(
                   children: [
-                    PlayingHeader(albumName: albumName),
+                    PlayingHeader(albumName: albumName, currentSong: currentSong),
                     const SizedBox(height: 16),
                     Expanded(
                       child: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/providers/history_provider.dart';
 import '../../../../core/providers/audio_provider.dart';
 
@@ -67,7 +68,7 @@ class RecentlyPlayedSection extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: NetworkImage(song.bestImageUrl.isNotEmpty ? song.bestImageUrl : 'https://via.placeholder.com/80'),
+                                image: CachedNetworkImageProvider(song.bestImageUrl.isNotEmpty ? song.bestImageUrl : 'https://via.placeholder.com/80'),
                                 fit: BoxFit.cover,
                               ),
                             ),

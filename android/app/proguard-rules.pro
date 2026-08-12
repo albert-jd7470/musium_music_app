@@ -1,0 +1,3 @@
+-keep class com.ryanheise.audioservice.** { *; }
+-dontwarn com.ryanheise.audioservice.**
+-keep class android.graphics.drawable.Icon { *; }

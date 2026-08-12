@@ -21,9 +21,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const HomeHeader(),
                 const SizedBox(height: 16),
-                FeaturedSection(
-                  items: DummyData.featuredItems,
-                ),
+                const FeaturedSection(),
                 const SizedBox(height: 16),
                 const RecentlyPlayedSection(),
                 const SizedBox(height: 16),

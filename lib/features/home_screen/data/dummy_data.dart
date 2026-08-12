@@ -2,11 +2,13 @@ class FeaturedItem {
   final String title;
   final String subtitle;
   final String imageUrl;
+  final String targetUrl;
 
   FeaturedItem({
     required this.title,
     required this.subtitle,
     required this.imageUrl,
+    required this.targetUrl,
   });
 }
 
@@ -67,11 +69,13 @@ class DummyData {
       title: 'Neon Dreams',
       subtitle: 'Synthwave Sessions',
       imageUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=500&auto=format&fit=crop',
+      targetUrl: '1167751266', // Real Hindi 1990s Playlist ID
     ),
     FeaturedItem(
       title: 'Canyon Echoes',
       subtitle: 'Indie Folk',
       imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=500&auto=format&fit=crop',
+      targetUrl: '154546814', // Real 90s Romance Playlist ID
     ),
   ];
 

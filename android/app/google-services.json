@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "23305955527-1ktf57av80q337ga5u5hapkvtubmlhna.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.musium",
+            "certificate_hash": "6add946a4e8186050706bd1b4f65a75bcfa68d9c"
+          }
+        },
+        {
           "client_id": "23305955527-2ulesm9rnkkdl14mknipea7t7hgj9ths.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
